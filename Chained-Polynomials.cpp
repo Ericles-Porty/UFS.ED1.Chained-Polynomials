@@ -31,6 +31,7 @@ void mult(tipoLista* polinomio, int mult, tipoLista* multPolonomio);
 void apagar(tipoLista* polinomio);
 void menu(tipoLista* p1, tipoLista* p2, tipoLista* pSomado, tipoLista* pSubtraido, tipoLista* multP1, tipoLista* multP2);
 
+//Define os valores base das listas
 void inicializa(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioSomado,tipoLista* polinomioSubtraido, tipoLista* multPolonomio1, tipoLista* multPolonomio2)
 {
     polinomio1->inicio = NULL;
@@ -53,68 +54,67 @@ void inicializa(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinom
     multPolonomio2->quant = 0;
 }
 
+//Atribui os nós(monomio) na lista(polinomio)
 void leitura(tipoLista* polinomio)
 {
-    tipoNo* novoNo;
+    tipoNo* monomio;
     tipoNo* atual;
-    int achou = 0;
+    int achouMesmoExp = 0;
     atual = polinomio->inicio;
     int expoente, coeficiente;
-    int tam = 0;
+    int tamanhoDoPolinomio = 0;
     cout << "Qual o tamanho do seu polinomio: ";
-    cin >> tam;
+    cin >> tamanhoDoPolinomio;
     system("cls");
-    for (int cont = 1; cont <= tam; cont++)
+    for (int cont = 1; cont <= tamanhoDoPolinomio; cont++)
     {
-        cout << "Digite o coeficiente do " << cont << " binomio" << endl;
+        cout << "Digite o coeficiente do " << cont << " monomio" << endl;
         cin >> coeficiente;
-        cout << "Digite o expoente do  " << cont << " binomio" << endl;
+        cout << "Digite o expoente do  " << cont << " monomio" << endl;
         cin >> expoente;
-
-        //rodar a lista toda procurando se ja tem algum expoente, se achar soma o coeficiente
-        if(polinomio->quant > 0){
+        if (polinomio->quant > 0) {
             tipoNo* temp = polinomio->inicio;
-            while(temp != NULL){
-                if(expoente == temp->expoente){
-                    achou = 1;
+            while (temp != NULL) {//Roda o polinomio ate o ultimo monomio adcionado
+                if (expoente == temp->expoente) {//Condição para caso ache um expoente igual, soma o coeficiente
+                    achouMesmoExp = 1;
                     temp->coeficiente += coeficiente;
                 }
                 temp = temp->proxNo;
             }
         }
 
-        if(achou == 0){
-            achou = 0;
-            novoNo = (tipoNo*)malloc(sizeof(tipoNo));
-            if (polinomio->quant == 0)
+        if (achouMesmoExp == 0) {//Caso ele não ache um novo expoente, ele vai inserir um novo monomio
+            achouMesmoExp = 0;
+            monomio = (tipoNo*)malloc(sizeof(tipoNo));
+            if (polinomio->quant == 0)//Condição para adcionar o primeiro monomio do polinomio
             {
-                novoNo->proxNo = NULL;
-                novoNo->coeficiente = coeficiente;
-                novoNo->expoente = expoente;
-                polinomio->inicio = novoNo;
-                polinomio->fim = novoNo;
+                monomio->proxNo = NULL;
+                monomio->coeficiente = coeficiente;
+                monomio->expoente = expoente;
+                polinomio->inicio = monomio;
+                polinomio->fim = monomio;
                 polinomio->quant++;
             }
-            else
+            else//Condição para adcionar os monomios após ter pelo menos um
             {
-                novoNo->proxNo = NULL;
-                novoNo->coeficiente = coeficiente;
-                novoNo->expoente = expoente;
-                polinomio->fim->proxNo = novoNo;
-                polinomio->fim = novoNo;
+                monomio->proxNo = NULL;
+                monomio->coeficiente = coeficiente;
+                monomio->expoente = expoente;
+                polinomio->fim->proxNo = monomio;
+                polinomio->fim = monomio;
                 polinomio->quant++;
             }
         }
-        
+
         system("cls");
     }
-        //------------------------
 }
 
+//Ordena o polinomio em ordem decrescente referente ao expoente
 void ordena(tipoLista* polinomio) {
-    int i;
-    for (i = 0; i < polinomio->quant - 1; i++) {
-        trocaNo(polinomio, noDoIndice(polinomio, i), maiorNo(polinomio, i));
+    int index;
+    for (index = 0; index < polinomio->quant - 1; index++) {
+        trocaNo(polinomio, noDoIndice(polinomio, index), maiorNo(polinomio, index));
     }
 }
 
@@ -189,33 +189,33 @@ int indiceDoNo(tipoLista* lista, tipoNo* no) { // retorna indice do no
 
 void printa(tipoLista* polinomio)
 {
-    tipoNo* novoNo;
-    novoNo = polinomio->inicio;
+    tipoNo* monomio;
+    monomio = polinomio->inicio;
 
-    while (novoNo != NULL)
+    while (monomio != NULL)
     {
-        if (novoNo->coeficiente != 0) {//caso coeficiente seja 0 nem precisa printar o numero
-            if (novoNo->coeficiente == 1)//se o coeficiente for 1 nao precisa printar o coeficiente
+        if (monomio->coeficiente != 0) {//Caso o coeficiente seja 0 não precisa printar o numero
+            if (monomio->coeficiente == 1)//Se o coeficiente for 1 nao precisa printar o coeficiente
             {
-                if (novoNo->expoente == 1)//se o expoente for 1 nao precisa printar a parte elevada
+                if (monomio->expoente == 1)//Se o expoente for 1 nao precisa printar a parte elevada
                     cout << "X";
                 else
-                    cout << "X^" << novoNo->expoente;
+                    cout << "X^" << monomio->expoente;
             }
             else
             {
-                if (novoNo->expoente == 1)
-                    cout << novoNo->coeficiente << "X";
+                if (monomio->expoente == 1)
+                    cout << monomio->coeficiente << "X";
                 else
-                    cout << novoNo->coeficiente << "X^" << novoNo->expoente;
+                    cout << monomio->coeficiente << "X^" << monomio->expoente;
             }
 
-            if (novoNo->proxNo == NULL)
+            if (monomio->proxNo == NULL)
                 cout << endl;
-            else if (novoNo->proxNo->coeficiente >= 0)
+            else if (monomio->proxNo->coeficiente >= 0)
                 cout << "+";
         }
-        novoNo = novoNo->proxNo;
+        monomio = monomio->proxNo;
     }
     cout << endl;
 }
