@@ -32,19 +32,28 @@ int maiorPolinomio(tipoLista* polinomio1, tipoLista* polinomio2);
 void printa(tipoLista* polinomio);
 
 
-void inicializa(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3)
+void inicializa(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3, tipoLista* multPolonomio1, tipoLista* multPolonomio2, tipoLista* multPolonomio3)
 {
     polinomio1->maiorExp = 0;
-    polinomio2->maiorExp = 0;
     polinomio1->inicio = NULL;
-    polinomio2->inicio = NULL;
-    polinomio3->inicio = NULL;
     polinomio1->fim = NULL;
-    polinomio2->fim = NULL;
-    polinomio3->fim = NULL;
     polinomio1->quant = 0;
+    polinomio2->maiorExp = 0;
+    polinomio2->inicio = NULL;
+    polinomio2->fim = NULL;
     polinomio2->quant = 0;
+    polinomio3->inicio = NULL;
+    polinomio3->fim = NULL;
     polinomio3->quant = 0;
+    multPolonomio1->inicio = NULL;
+    multPolonomio1->fim = NULL;
+    multPolonomio1->quant = 0;
+    multPolonomio2->inicio = NULL;
+    multPolonomio2->fim = NULL;
+    multPolonomio2->quant = 0;
+    multPolonomio3->inicio = NULL;
+    multPolonomio3->fim = NULL;
+    multPolonomio3->quant = 0;
 }
 
 void leitura(tipoLista* polinomio)
@@ -183,7 +192,7 @@ int maiorPolinomio(tipoLista* polinomio1, tipoLista* polinomio2) {
         return 2;
 }
 
-void escreveResul(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
+/*void escreveResul(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
     tipoNo* atual1;
     atual1 = polinomio1->inicio;
     tipoNo* atual2;
@@ -208,9 +217,9 @@ void escreveResul(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polin
         }
     }
 
-}
+}*/
 
-void sum(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
+/*void sum(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
     tipoNo* atual1;
     atual1 = polinomio1->inicio;
     tipoNo* atual2;
@@ -290,13 +299,86 @@ void sum(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
         }
     }
 }
-
+*/
 void sub(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
 
 }
 
-void mult(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3) {
+void mult(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3,int mult, tipoLista* multPolonomio1, tipoLista* multPolonomio2, tipoLista* multPolonomio3) {
+    tipoNo* atual1;
+    tipoNo* temp1;
+    temp1 = (tipoNo*)malloc(sizeof(tipoNo));
+    atual1 = polinomio1->inicio;
+    tipoNo* atual2;
+    atual2 = (tipoNo*)malloc(sizeof(tipoNo));
+    atual2 = polinomio2->inicio;
+    tipoNo* atual3;
+    atual3 = (tipoNo*)malloc(sizeof(tipoNo));
+    atual3 = polinomio3->inicio;
+    while (atual1->proxNo != NULL) {
+       
+        if (multPolonomio1->quant == 0)
+        {
+            if (temp1 == NULL)
+                return;
+            temp1->coeficiente = atual1->coeficiente*mult;
+            temp1->proxNo = NULL;
+            multPolonomio1->inicio = temp1;
+            multPolonomio1->fim = temp1;
+            multPolonomio1->quant++;
+        }
+        else
+        {
+            if (temp1 == NULL)
+                return;
+            temp1->coeficiente = atual1->coeficiente * mult;
+            temp1->proxNo = NULL;
+            multPolonomio1->fim->proxNo = temp1;
+            multPolonomio1->fim = temp1;
+            multPolonomio1->quant++;
+        }
+        atual1 = atual1->proxNo;
+    }
+    /*while (atual2 != NULL) {
 
+        if (multPolonomio1->quant == 0)
+        {
+            atual2->proxNo = NULL;
+            atual2->coeficiente *= mult;
+            multPolonomio2->inicio = atual2;
+            multPolonomio2->fim = atual2;
+            multPolonomio2->quant++;
+        }
+        else
+        {
+            atual2->proxNo = NULL;
+            atual2->coeficiente *= mult;
+            multPolonomio2->fim->proxNo = atual2;
+            multPolonomio2->fim = atual1;
+            multPolonomio2->quant++;
+        }
+        atual2 = atual2->proxNo;
+    }
+    while (atual3 != NULL) {
+       
+        if (multPolonomio1->quant == 0)
+        {
+            atual3->proxNo = NULL;
+            atual3->coeficiente *= mult;
+            multPolonomio3->inicio = atual3;
+            multPolonomio3->fim = atual3;
+            multPolonomio3->quant++;
+        }
+        else
+        {
+            atual3->proxNo = NULL;
+            atual3->coeficiente *= mult;
+            multPolonomio3->fim->proxNo = atual3;
+            multPolonomio3->fim = atual3;
+            multPolonomio3->quant++;
+        }
+        atual3 = atual3->proxNo;
+    }*/
 }
 
 void printa(tipoLista* polinomio)
@@ -333,8 +415,9 @@ void printa(tipoLista* polinomio)
 int main()
 {
     int op;
-    TipoLista polinomio1, polinomio2, polinomio3;
-    inicializa(&polinomio1, &polinomio2, &polinomio3);
+    int aux = 1;
+    tipoLista polinomio1, polinomio2, polinomio3, multPolonomio1, multPolonomio2, multPolonomio3;
+    inicializa(&polinomio1, &polinomio2, &polinomio3, &multPolonomio1, &multPolonomio2, &multPolonomio3);
     leitura(&polinomio1);
     leitura(&polinomio2);
     cout << "Polinomio 1: " << endl;
@@ -343,6 +426,7 @@ int main()
     cout << "Polinomio 2: " << endl;
     ordena(&polinomio2);
     printa(&polinomio2);
+    //escreveResul(&polinomio1, &polinomio2, &polinomio3);
     cout << "Digite a opcao que deseja: " << endl;
     cout << "1 - Soma" << endl;
     cout << "2 - Subtracao" << endl;
@@ -350,26 +434,27 @@ int main()
     cout << "0 - Encerra" << endl;
     cin >> op;
     switch (op) {
-    case 1: 
-        cout << "Test 0" << endl;
-        escreveResul(&polinomio1, &polinomio2, &polinomio3);
-        cout << "Test 3" << endl;
+    case 1:
         printa(&polinomio3);
-        cout << "Test 4" << endl;
         break;
 
-    case 2: 
+    case 2:
         sub(&polinomio1, &polinomio2, &polinomio3);
         printa(&polinomio3);
 
         break;
 
-    case 3: 
-        mult(&polinomio1, &polinomio2, &polinomio3);
-        printa(&polinomio3);
+    case 3:
+        cout << "Qual multiplicador que ira multiplicar escaladamente as 3 funcoes? " << endl;
+        cin >> aux;
+        mult(&polinomio1, &polinomio2, &polinomio3, aux, &multPolonomio1, &multPolonomio2, &multPolonomio3);
+        printa(&multPolonomio1);
+        //printa(&polinomio2);
+        //printa(&polinomio3);
 
         break;
     case 0:
+
         return 0;
     default:
         cout << "Digite uma operacao valida!" << endl << endl;
