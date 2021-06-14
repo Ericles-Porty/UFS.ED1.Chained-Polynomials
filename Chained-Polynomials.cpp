@@ -21,15 +21,16 @@ void inicializa(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinom
 void leitura(tipoLista* polinomio);
 void ordena(tipoLista* polinomio);
 void trocaNo(tipoLista* polinomio, tipoNo* noA, tipoNo* noB);
-tipoNo* noDoIndice(tipoLista* lista, int i);
-tipoNo* maiorNo(tipoLista* polinomio, int i);
+tipoNo* noDoIndice(tipoLista* lista, int index);
+tipoNo* maiorNo(tipoLista* polinomio, int index);
 int indiceDoNo(tipoLista* lista, tipoNo* no);
 void printa(tipoLista* polinomio);
-void insereNo(tipoLista* polinomio3, tipoNo* temp, int newCoeficiente);
-void operacao(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioSomado, int i);
-void mult(tipoLista* polinomio, int mult, tipoLista* multPolonomio);
+void insereNo(tipoLista* polinomio, tipoNo* monomio, int index);
+void operacao(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioResultante, int positivoOuNegativo);
+void mult(tipoLista* polinomio, int multiplicador, tipoLista* polinomioResultante);
 void apagar(tipoLista* polinomio);
-void menu(tipoLista* p1, tipoLista* p2, tipoLista* pSomado, tipoLista* pSubtraido, tipoLista* multP1, tipoLista* multP2);
+void menu(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioSomado, tipoLista* polinomioSubtraido, tipoLista* polinomioMultiplicado1, tipoLista* polinomioMultiplicado2);
+
 
 //Define os valores base das listas
 void inicializa(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioSomado,tipoLista* polinomioSubtraido, tipoLista* multPolonomio1, tipoLista* multPolonomio2)
@@ -118,6 +119,7 @@ void ordena(tipoLista* polinomio) {
     }
 }
 
+//Troca 2 nós de posição
 void trocaNo(tipoLista* polinomio, tipoNo* noA, tipoNo* noB) {
     if (noA == noB) {
         return;
@@ -147,19 +149,21 @@ void trocaNo(tipoLista* polinomio, tipoNo* noA, tipoNo* noB) {
     noB->proxNo = temp;
 }
 
-tipoNo* noDoIndice(tipoLista* lista, int i) { //retorna o no do indice
-    if (i >= 0 && i < lista->quant) {
+//Função retorna o monomio de uma posição escolhida
+tipoNo* noDoIndice(tipoLista* lista, int index) { //retorna o no do indice
+    if (index >= 0 && index < lista->quant) {
         tipoNo* atual= lista->inicio;
         int o;
-        for (o = 0; o < i; o++)
+        for (o = 0; o < index; o++)
             atual = atual->proxNo;
         return atual;
     }
     return NULL;
 }
 
-tipoNo* maiorNo(tipoLista* polinomio, int i) {
-    tipoNo* atual = noDoIndice(polinomio, i);
+//Função retorna o maior monomio
+tipoNo* maiorNo(tipoLista* polinomio, int index) {
+    tipoNo* atual = noDoIndice(polinomio, index);
 
     if (atual != NULL) {
         tipoNo* maior = atual;
@@ -173,6 +177,7 @@ tipoNo* maiorNo(tipoLista* polinomio, int i) {
     return NULL;
 }
 
+//Função retorna a posição de um monomio
 int indiceDoNo(tipoLista* lista, tipoNo* no) { // retorna indice do no
     if (no != NULL) {
         tipoNo* atual = lista->inicio;
@@ -222,13 +227,13 @@ void printa(tipoLista* polinomio)
 }
 
 //Função que insere um novo novoMonomio para realizar operações
-void insereNo(tipoLista* polinomio, tipoNo* temp, int index){
+void insereNo(tipoLista* polinomio, tipoNo* monomio, int index){
     tipoNo* novoMonomio = (tipoNo*)malloc(sizeof(tipoNo));
     if (polinomio->quant == 0)  //Condição para inserir o primeiro monomio
     {
         novoMonomio->proxNo = NULL;
         novoMonomio->coeficiente = index;
-        novoMonomio->expoente = temp->expoente;
+        novoMonomio->expoente = monomio->expoente;
         polinomio->inicio = novoMonomio;
         polinomio->fim = novoMonomio;
         polinomio->quant++;
@@ -237,7 +242,7 @@ void insereNo(tipoLista* polinomio, tipoNo* temp, int index){
     {
         novoMonomio->proxNo = NULL;
         novoMonomio->coeficiente = index;
-        novoMonomio->expoente = temp->expoente;
+        novoMonomio->expoente = monomio->expoente;
         polinomio->fim->proxNo = novoMonomio;
         polinomio->fim = novoMonomio;
         polinomio->quant++;
@@ -315,11 +320,12 @@ void apagar(tipoLista* polinomio) {
     }
 }
 
-void menu(tipoLista* polinomio1, tipoLista* p2, tipoLista* pSomado, tipoLista* pSubtraido, tipoLista* multP1, tipoLista* multP2) {
+//Função que apresenta o menu
+void menu(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioSomado, tipoLista* polinomioSubtraido, tipoLista* polinomioMultiplicado1, tipoLista* polinomioMultiplicado2) {
     int opcao1 = 0, opcao2 = 0;
     int quantidadePolinomios = 0;
     int jaFoiSomado = 0, jaFoiSubtraido = 0, jaFoiMultiplicado1 = 0, jaFoiMultiplicado2=0;
-    int aux = 1;
+    int multiplicador = 1;
 
     do {
         system("cls");
@@ -335,9 +341,9 @@ void menu(tipoLista* polinomio1, tipoLista* p2, tipoLista* pSomado, tipoLista* p
         //Condição para adcionar 2 polinomios
         else if (quantidadePolinomios == 2) {
             leitura(polinomio1);
-            leitura(p2);
+            leitura(polinomio2);
             ordena(polinomio1);
-            ordena(p2);
+            ordena(polinomio2);
         }
         //Caso a pessoa não tenha digitado nem 1 nem 2
         else
@@ -349,7 +355,7 @@ void menu(tipoLista* polinomio1, tipoLista* p2, tipoLista* pSomado, tipoLista* p
         printa(polinomio1);
         if (quantidadePolinomios == 2) {
             cout << "Polinomio 2: ";
-            printa(p2);
+            printa(polinomio2);
         }
         cout << "Digite a opcao que deseja: " << endl;
         cout << "1 - Soma os dois polinomios." << endl;
@@ -361,90 +367,96 @@ void menu(tipoLista* polinomio1, tipoLista* p2, tipoLista* pSomado, tipoLista* p
         cin >> opcao1;
         switch (opcao1) {
         case 1:
-
+            //Ele não deixa somar caso tenha só 1 polinomio
             if (quantidadePolinomios == 1) {
                 cout << "Voce so tem 1 polinomio, deseja ler outro? " << endl << "Sim: <1>" << endl << "Nao: <2> ou <qualquer numero inteiro>" << endl;
                 cin >> opcao2;
                 if (opcao2 == 1) {
-                    leitura(p2);
-                    ordena(p2);
+                    leitura(polinomio2);
+                    ordena(polinomio2);
                     quantidadePolinomios++;
                 }
             }
             if (quantidadePolinomios == 2) {
                 if (jaFoiSomado == 0) {
-                    operacao(polinomio1, p2, pSomado,1);
+                    operacao(polinomio1, polinomio2, polinomioSomado,1);
                     jaFoiSomado++;
                 }
                 system("cls");
                 cout << "Polinomio resultante da soma: ";
-                printa(pSomado);
+                printa(polinomioSomado);
             }
             break;
 
         case 2:
+            //Ele não deixa subtrair caso tenha só 1 polinomio
             if (quantidadePolinomios == 1) {
                 cout << "Voce so tem 1 polinomio, deseja ler outro? " << endl << "Sim: <1>" << endl << "Nao: <2> ou <qualquer numero inteiro>" << endl;
                 cin >> opcao2;
                 if (opcao2 == 1) {
-                    leitura(p2);
-                    ordena(p2);
+                    leitura(polinomio2);
+                    ordena(polinomio2);
                     quantidadePolinomios++;
                 }
             }
             if (quantidadePolinomios == 2) {
                 if (jaFoiSubtraido == 0) {
-                    operacao(polinomio1, p2, pSubtraido,-1);
+                    operacao(polinomio1, polinomio2, polinomioSubtraido,-1);
                     jaFoiSubtraido++;
                 }
                 system("cls");
                 cout << "Polinomio resultante da subtracao: ";
-                printa(pSubtraido);
+                printa(polinomioSubtraido);
             }
             break;
 
         case 3:
             system("cls");
+            //Condição que opera a multiplicação pela primeira vez
             if (jaFoiMultiplicado1 == 0) {
                 cout << "Qual multiplicador que ira multiplicar escaladamente os polinomios? " << endl;
-                cin >> aux;
-                mult(polinomio1, aux, multP1);
+                cin >> multiplicador;
+                mult(polinomio1, multiplicador, polinomioMultiplicado1);
                 if (quantidadePolinomios == 2) {
-                    mult(p2, aux, multP2);
+                    mult(polinomio2, multiplicador, polinomioMultiplicado2);
                     jaFoiMultiplicado2++;
                 }
                 jaFoiMultiplicado1++;
             }
+            //Condição que opera a multiplicação pela segunda ou subsequente vez
             else {
-                apagar(multP1);
+                //Apaga os valores polinomios
+                apagar(polinomioMultiplicado1);
                 if(quantidadePolinomios==2 && jaFoiMultiplicado2>0)
-                    apagar(multP2);
-                multP1->inicio = NULL;
-                multP1->fim = NULL;
-                multP1->quant = 0;
-                multP2->inicio = NULL;
-                multP2->fim = NULL;
-                multP2->quant = 0;
+                    apagar(polinomioMultiplicado2);
+                //Inicia os valores dos polinomios resultantes novamente
+                polinomioMultiplicado1->inicio = NULL;
+                polinomioMultiplicado1->fim = NULL;
+                polinomioMultiplicado1->quant = 0;
+                polinomioMultiplicado2->inicio = NULL;
+                polinomioMultiplicado2->fim = NULL;
+                polinomioMultiplicado2->quant = 0;
                 cout << "Qual multiplicador que ira multiplicar escaladamente os polinomios? " << endl;
-                cin >> aux;
-                mult(polinomio1, aux, multP1);
+                cin >> multiplicador;
+                mult(polinomio1, multiplicador, polinomioMultiplicado1);
                 if (quantidadePolinomios == 2)
-                    mult(p2, aux, multP2);
+                    mult(polinomio2, multiplicador, polinomioMultiplicado2);
                 jaFoiMultiplicado1++;
             }
             system("cls");
-            cout << "Resultado do polinomio 1 multiplicado por " << aux << ": ";
-            printa(multP1);
+            cout << "Resultado do polinomio 1 multiplicado por " << multiplicador << ": ";
+            printa(polinomioMultiplicado1);
             if (quantidadePolinomios == 2) {
-                cout << "Resultado do polinomio 2 multiplicado por " << aux << ": ";
-                printa(multP2);
+                cout << "Resultado do polinomio 2 multiplicado por " << multiplicador << ": ";
+                printa(polinomioMultiplicado2);
             }
             break;
         case 4:
             system("cls");
+            //Condição para criar o segundo polinomio
             if (quantidadePolinomios == 1) {
-                leitura(p2);
-                ordena(p2);
+                leitura(polinomio2);
+                ordena(polinomio2);
                 quantidadePolinomios++;
             }
             else {
@@ -462,12 +474,13 @@ void menu(tipoLista* polinomio1, tipoLista* p2, tipoLista* pSomado, tipoLista* p
 
 int main()
 {
-    
+    //Cria as listas
     tipoLista polinomio1, polinomio2, polinomioSomado, polinomioSubtraido, multPolonomio1, multPolonomio2;
+    //Inicializa as listas
     inicializa(&polinomio1, &polinomio2, &polinomioSomado, &polinomioSubtraido, &multPolonomio1, &multPolonomio2);
+    //Chama o menu
     menu(&polinomio1, &polinomio2, &polinomioSomado, &polinomioSubtraido, &multPolonomio1, &multPolonomio2);
     
     return 0;
 }
 
-//ler linha 72
