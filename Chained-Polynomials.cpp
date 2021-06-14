@@ -412,6 +412,59 @@ void printa(tipoLista* polinomio)
     cout << endl;
 }
 
+void insertNewNo(tipoLista* polinomio3, tipoNo* temp1, int newCoeficiente){
+    tipoNo* novoNo = (tipoNo*)malloc(sizeof(tipoNo));
+    if (polinomio3->quant == 0)
+    {
+        novoNo->proxNo = NULL;
+        novoNo->coeficiente = newCoeficiente;
+        novoNo->expoente = temp1->expoente;
+        polinomio3->inicio = novoNo;
+        polinomio3->fim = novoNo;
+        polinomio3->quant++;
+    }
+    else
+    {
+        novoNo->proxNo = NULL;
+        novoNo->coeficiente = newCoeficiente;
+        novoNo->expoente = temp1->expoente;
+        polinomio3->fim->proxNo = novoNo;
+        polinomio3->fim = novoNo;
+        polinomio3->quant++;
+    }
+}
+
+void soma(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomio3){
+    tipoNo* temp1 = polinomio1->inicio;
+    tipoNo* temp2 = polinomio2->inicio;
+
+    while (temp1 != NULL && temp2 != NULL)
+    {
+        if(temp1->expoente == temp2->expoente){
+            insertNewNo(polinomio3, temp1, temp1->coeficiente+temp2->coeficiente);
+            temp1 = temp1->proxNo;
+            temp2 = temp2->proxNo;
+        } else if(temp1->expoente > temp2->expoente){
+            insertNewNo(polinomio3, temp1, temp1->coeficiente);
+            temp1 = temp1->proxNo;
+        } else if(temp1->expoente < temp2->expoente){
+            insertNewNo(polinomio3, temp2, temp1->coeficiente);
+            temp2 = temp2->proxNo;
+        }
+    }
+
+    while (temp1 != NULL)
+    {
+        insertNewNo(polinomio3, temp1, temp1->coeficiente);
+        temp1 = temp1->proxNo;
+    }
+    while (temp2 != NULL)
+    {
+        insertNewNo(polinomio3, temp2, temp2->coeficiente);
+        temp2 = temp2->proxNo;
+    }
+}
+
 int main()
 {
     int op;
@@ -426,8 +479,10 @@ int main()
     cout << "Polinomio 2: " << endl;
     ordena(&polinomio2);
     printa(&polinomio2);
+    soma(&polinomio1, &polinomio2, &polinomio3);
+    printa(&polinomio3);
     //escreveResul(&polinomio1, &polinomio2, &polinomio3);
-    cout << "Digite a opcao que deseja: " << endl;
+    /*cout << "Digite a opcao que deseja: " << endl;
     cout << "1 - Soma" << endl;
     cout << "2 - Subtracao" << endl;
     cout << "3 - Multiplicao" << endl;
@@ -458,7 +513,7 @@ int main()
         return 0;
     default:
         cout << "Digite uma operacao valida!" << endl << endl;
-    }
+    }*/
     return 0;
 }
 
