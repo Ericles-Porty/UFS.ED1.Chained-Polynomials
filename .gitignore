@@ -1,7 +1,8 @@
+Debug/
 .vs/
+.gitattributes
 Chained-Polynomials.sln
 Chained-Polynomials.vcxproj
 Chained-Polynomials.vcxproj.filters
 Chained-Polynomials.vcxproj.user
-Debug/
-.gitattributes
+CppProperties.json
