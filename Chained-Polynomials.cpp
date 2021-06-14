@@ -376,3 +376,7 @@ int main()
     }
     return 0;
 }
+
+//preencher o Polinomio3 usando a função escrever resul
+//fazer as operacoes soma na função sum() e subtracao na sub()
+//multiplicao
