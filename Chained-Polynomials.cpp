@@ -301,8 +301,7 @@ void mult(tipoLista* polinomio, int multiplicador, tipoLista* polinomioResultant
         //Insere os monomios já multiplicados no polinomio resultante
         insereNo(polinomioResultante, monomio, monomio->coeficiente * multiplicador);
         monomio = monomio->proxNo;
-    }
-    
+    }    
 }
 
 //Função que libera a memória dos monomios de um polinomio que vai ser apagado
