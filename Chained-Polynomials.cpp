@@ -72,26 +72,40 @@ void leitura(tipoLista* polinomio)
         cin >> expoente;
 
         //rodar a lista toda procurando se ja tem algum expoente, se achar soma o coeficiente
+        if(polinomio->quant > 0){
+            tipoNo* temp = polinomio->inicio;
+            while(temp != NULL){
+                if(expoente == temp->expoente){
+                    achou = 1;
+                    temp->coeficiente += coeficiente;
+                }
+                temp = temp->proxNo;
+            }
+        }
+
+        if(achou == 0){
+            achou = 0;
+            novoNo = (tipoNo*)malloc(sizeof(tipoNo));
+            if (polinomio->quant == 0)
+            {
+                novoNo->proxNo = NULL;
+                novoNo->coeficiente = coeficiente;
+                novoNo->expoente = expoente;
+                polinomio->inicio = novoNo;
+                polinomio->fim = novoNo;
+                polinomio->quant++;
+            }
+            else
+            {
+                novoNo->proxNo = NULL;
+                novoNo->coeficiente = coeficiente;
+                novoNo->expoente = expoente;
+                polinomio->fim->proxNo = novoNo;
+                polinomio->fim = novoNo;
+                polinomio->quant++;
+            }
+        }
         
-        novoNo = (tipoNo*)malloc(sizeof(tipoNo));
-        if (polinomio->quant == 0)
-        {
-            novoNo->proxNo = NULL;
-            novoNo->coeficiente = coeficiente;
-            novoNo->expoente = expoente;
-            polinomio->inicio = novoNo;
-            polinomio->fim = novoNo;
-            polinomio->quant++;
-        }
-        else
-        {
-            novoNo->proxNo = NULL;
-            novoNo->coeficiente = coeficiente;
-            novoNo->expoente = expoente;
-            polinomio->fim->proxNo = novoNo;
-            polinomio->fim = novoNo;
-            polinomio->quant++;
-        }
         system("cls");
     }
         //------------------------
