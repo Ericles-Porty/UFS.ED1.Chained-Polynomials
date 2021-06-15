@@ -358,7 +358,7 @@ void menu(tipoLista* polinomio1, tipoLista* polinomio2, tipoLista* polinomioSoma
         cout << "Digite a opcao que deseja: " << endl;
         cout << "1 - Soma os dois polinomios." << endl;
         cout << "2 - Subtrai os dois polinomios." << endl;
-        cout << "3 - Multiplica o polinomio 1 ou 2." << endl;
+        cout << "3 - Multiplica o polinomio." << endl;
         if (quantidadePolinomios == 1)
             cout << "4 - Adciona outro polinomio. Voce tem '" << quantidadePolinomios << "' polinomio" << endl;;
         cout << "0 - Encerra" << endl;
