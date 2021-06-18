@@ -2,7 +2,7 @@
 
 ***
 
-Projeto apresentado como sistema de cálculo polinomial, como requisito para avaliação e participação da disciplina de Estrutura de Dados I no semestre letivo 2020.2
+Projeto apresentado como sistema de cálculo polinomial, como requisito para avaliação e participação da disciplina de Estrutura de Dados I no semestre letivo 2020.2.
 
 ***
 
@@ -57,7 +57,7 @@ polinômio resultante.
   *  1 - Soma os dois polinômios.
   *  2 - Subtrai os dois polinômios.
   *  3 - Multiplica o polinômio.
-  *  4 - Adciona outro polinômio. Voce tem '1' polinômio. (caso tenha 2 essa opção não irá aparecer
+  *  4 - Adciona outro polinômio. Voce tem '1' polinômio. (caso tenha 2 essa opção não irá aparecer).
   *  0 - encerra o código.
   
 4. Caso o usuário escolha a opção 1 ou 2 e tenha os dois polinômios no sistema, o programa faz o cálculo da soma ou subtração entre os dois existentes, gerando um terceiro polinômio resultado.
@@ -68,5 +68,5 @@ polinômio resultante.
 
 ### **Observações importantes**
 * A opção 3 pode ser escolhida várias vezes.
-* Caso queira criar outros polinômios é necessário reiniciar o programa. (Atualização futura corrigirá essa limitação)
-* Na subtração apenas é subtraído o primeiro polinômio pelo segundo. (Atualização futura corrigirá essa limitação)
+* Caso queira criar outros polinômios é necessário reiniciar o programa. (Atualização futura corrigirá essa limitação).
+* Na subtração apenas é subtraído o primeiro polinômio pelo segundo. (Atualização futura corrigirá essa limitação).
